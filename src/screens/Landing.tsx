@@ -193,7 +193,11 @@ const Landing = ({navigation}): React.JSX.Element => {
               </Text>
             </View>
 
-            <Button title="Register" onPress={handleRegister} />
+            <Button
+              title="Register"
+              onPress={handleRegister}
+              isLoading={isLoading}
+            />
 
             <View style={styles.linkWrapper}>
               <TouchableOpacity
@@ -240,7 +244,12 @@ const Landing = ({navigation}): React.JSX.Element => {
               ),
             )}
 
-            <Button style={styles.button} title="Login" onPress={handleLogin} />
+            <Button
+              style={styles.button}
+              title="Login"
+              onPress={handleLogin}
+              isLoading={isLoading}
+            />
 
             <View style={styles.linkWrapper}>
               <TouchableOpacity style={styles.touchableLink}>
