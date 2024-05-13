@@ -1,6 +1,13 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image, FlatList, TouchableOpacity} from 'react-native';
-import { COLORS } from '../constants';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
+import {COLORS} from '../constants';
 
 const Home = ({navigation}): React.JSX.Element => {
   const cards: CardItem[] = [
@@ -88,7 +95,11 @@ const Home = ({navigation}): React.JSX.Element => {
 
   const Card = ({route, icon, color}: CardItem) => {
     return (
-      <TouchableOpacity onPress={()=>{navigation.navigate(route)}} style={styles.card(color)}>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate(route);
+        }}
+        style={styles.card(color)}>
         <Image style={styles.cardIcon} source={icon} />
         {/* <Text style={styles.cardText}>{title}</Text> */}
       </TouchableOpacity>
@@ -102,7 +113,9 @@ const Home = ({navigation}): React.JSX.Element => {
         keyExtractor={(item, idx) => idx.toString()}
         numColumns={2}
         contentContainerStyle={styles.cardsContainer}
-        renderItem={({ item }) => <Card route={item.route} icon={item.icon} color={item.color} />}
+        renderItem={({item}) => (
+          <Card route={item.route} icon={item.icon} color={item.color} />
+        )}
       />
     </View>
   );
@@ -125,12 +138,12 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 10,
     backgroundColor: color, // Default color, you can adjust as needed
-    aspectRatio:1,
-    borderRadius:12
+    aspectRatio: 1,
+    borderRadius: 12,
   }),
   cardIcon: {
-    flex:1,
-    aspectRatio:1
+    flex: 1,
+    aspectRatio: 1,
     // height: a,
   },
   cardText: {
