@@ -30,7 +30,6 @@ const Speakers = ({navigation}): React.JSX.Element => {
     try {
       const {data} = await api.post('/LoadSpeakers?EventId=1', null, {});
       let res = data?.Data?.Result;
-      console.log(res);
 
       if (res) {
         setData(groupByDates(res));
