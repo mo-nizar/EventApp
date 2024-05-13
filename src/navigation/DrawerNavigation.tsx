@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import * as Screens from '../screens';
+import {COLORS} from '../constants';
 
 const cards = [
   {
@@ -92,6 +93,15 @@ export default function DrawerNavigation() {
           name={item.title}
           component={item.component}
           key={item.title}
+          options={{
+            headerStyle: {
+              backgroundColor:
+                item.title == 'Home' ? COLORS.tertiary : COLORS.light,
+            },
+            headerTitleStyle:{
+              color: item.title == 'Home' ? COLORS.light : COLORS.tertiary,
+          },
+          }}
         />
       ))}
     </Drawer.Navigator>

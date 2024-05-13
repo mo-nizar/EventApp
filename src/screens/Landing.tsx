@@ -126,7 +126,6 @@ const Landing = ({navigation}): React.JSX.Element => {
         },
       });
 
-      console.log(data);
       if (data?.status) {
         navigation.navigate('Root');
       } else {
