@@ -5,21 +5,17 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
-  ScrollView,
   useWindowDimensions,
 } from 'react-native';
 import api from '../services/api';
 import {COLORS} from '../constants';
 import RenderHtml from 'react-native-render-html';
+import Screen from '../layouts/Screen';
 
 const Speakers = ({navigation}): React.JSX.Element => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const {width} = useWindowDimensions();
-
-  const [activeDate, setActiveDate] = useState(null);
-  const [datesList, setDatesList] = useState([]);
-  const [titles, setTitles] = useState({});
 
   useEffect(() => {
     fetchData();
@@ -30,9 +26,8 @@ const Speakers = ({navigation}): React.JSX.Element => {
     try {
       const {data} = await api.post('/LoadSpeakers?EventId=1', null, {});
       let res = data?.Data?.Result;
-
       if (res) {
-        setData(groupByDates(res));
+        setData(res);
       } else {
         throw new Error();
       }
@@ -47,34 +42,6 @@ const Speakers = ({navigation}): React.JSX.Element => {
     navigation.navigate('SpeakerDetails', {prof: item});
   };
 
-  const onDateSelect = date => {
-    setActiveDate(date);
-  };
-  const groupByDates = data => {
-    const groupedData = {};
-    let list = [];
-    let titles = [];
-
-    data.forEach(item => {
-      const date = item.date;
-      if (!groupedData[date]) {
-        groupedData[date] = [];
-      }
-
-      if (!list.includes(item.date)) {
-        list.push(item.date);
-        titles[item.date] = item.Title;
-      }
-
-      setTitles(titles);
-      setDatesList(list);
-      setActiveDate(list[0]);
-      groupedData[date].push(item);
-    });
-
-    return groupedData;
-  };
-
   if (isLoading || !data) {
     return (
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
@@ -84,7 +51,7 @@ const Speakers = ({navigation}): React.JSX.Element => {
   }
 
   return (
-    <View style={styles.container}>
+    <Screen style={styles.container}>
       <Image
         source={require('../assets/images/loreal_logo.png')}
         style={styles.logo}
@@ -95,8 +62,8 @@ const Speakers = ({navigation}): React.JSX.Element => {
       <View style={styles.greyBorder} />
 
       <View style={styles.eventsConatiner}>
-        <ScrollView contentContainerStyle={styles.eventScroller}>
-          {data[activeDate]?.map((item, idx) => {
+        <View contentContainerStyle={styles.eventScroller}>
+          {data?.map((item, idx) => {
             return (
               <TouchableOpacity
                 key={idx}
@@ -118,9 +85,9 @@ const Speakers = ({navigation}): React.JSX.Element => {
               </TouchableOpacity>
             );
           })}
-        </ScrollView>
+        </View>
       </View>
-    </View>
+    </Screen>
   );
 };
 
@@ -129,7 +96,7 @@ export default Speakers;
 const styles = StyleSheet.create({
   container: {
     paddingTop: 20,
-    flex: 1,
+    padding: 0,
     backgroundColor: COLORS.light,
   },
   logo: {
@@ -157,49 +124,6 @@ const styles = StyleSheet.create({
   eventsConatiner: {
     flex: 1,
   },
-  datesSection: {
-    width: '100%',
-  },
-  dateCard: selected => ({
-    backgroundColor: selected ? COLORS.tertiary : COLORS.light,
-    borderRadius: 20,
-    marginRight: 4,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderWidth: 2,
-    borderColor: COLORS.tertiary,
-    maxWidth: '40%',
-  }),
-  buttonDate: selected => ({
-    color: selected ? COLORS.light : COLORS.tertiary,
-    fontSize: 12,
-    fontWeight: '700',
-    textAlign: 'center',
-  }),
-  datesScroller: {},
-  titleWrapper: {
-    backgroundColor: COLORS.grey,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 5,
-  },
-  timeTitle: {
-    color: COLORS.light,
-    fontSize: 14,
-    fontWeight: '600',
-    flex: 1,
-    textAlign: 'center',
-  },
-  topicTitle: {
-    color: COLORS.light,
-    fontSize: 14,
-    fontWeight: '600',
-    flex: 3,
-    textAlign: 'center',
-  },
-  eventsWrapper: {
-    overflow: 'hidden',
-  },
   profImage: {
     width: '70%',
     aspectRatio: 1,
@@ -209,6 +133,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 20,
     width: '100%',
+    borderBottomWidth: 0.5,
+    borderBottomColor: COLORS.grey,
   },
 
   topicSpeaker: {
@@ -232,13 +158,6 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     fontWeight: '600',
     fontSize: 16,
-  },
-  datesWrapper: {
-    width: '100%',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
   },
   eventScroller: {
     paddingBottom: 150,

@@ -1,12 +1,5 @@
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Touchable,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Alert} from 'react-native';
 import Input from '../components/Input';
 import Screen from '../layouts/Screen';
 import Button from '../components/Button';
@@ -93,7 +86,7 @@ const Landing = ({navigation}): React.JSX.Element => {
   const handleLogin = async () => {
     navigation.navigate('Root');
 
-    setIsLoading(true);
+    // setIsLoading(true);
     // try {
     //   const {data} = await api.post('/UserLogin', null, {});
     //   if (data) {

@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import api from '../services/api';
 import {COLORS} from '../constants';
+import Screen from '../layouts/Screen';
 
 const Agenda = (): React.JSX.Element => {
   const [data, setData] = useState([]);
@@ -79,7 +80,7 @@ const Agenda = (): React.JSX.Element => {
   }
 
   return (
-    <View style={styles.container}>
+    <Screen style={styles.container}>
       <Image
         source={require('../assets/images/loreal_logo.png')}
         style={styles.logo}
@@ -118,7 +119,7 @@ const Agenda = (): React.JSX.Element => {
             <Text style={styles.topicTitle}>Topic</Text>
           </View>
 
-          <ScrollView contentContainerStyle={styles.eventScroller}>
+          <View contentContainerStyle={styles.eventScroller}>
             {data[activeDate]?.map((item, idx) => {
               return (
                 <TouchableOpacity
@@ -133,10 +134,10 @@ const Agenda = (): React.JSX.Element => {
                 </TouchableOpacity>
               );
             })}
-          </ScrollView>
+          </View>
         </View>
       </View>
-    </View>
+    </Screen>
   );
 };
 
@@ -145,7 +146,7 @@ export default Agenda;
 const styles = StyleSheet.create({
   container: {
     paddingTop: 20,
-    flex: 1,
+    padding:0,
     backgroundColor: 'white',
   },
   logo: {
