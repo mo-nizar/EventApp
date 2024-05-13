@@ -16,9 +16,7 @@ const styles = StyleSheet.create({
     backgroundColor:COLORS.light,
   },
   safearea:{
-    flex:1,
     backgroundColor:COLORS.light,
-
   }
 });
 

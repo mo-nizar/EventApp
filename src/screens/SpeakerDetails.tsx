@@ -14,7 +14,7 @@ import RenderHtml from 'react-native-render-html';
 import Screen from '../layouts/Screen';
 
 const SpeakerDetails = ({route}): React.JSX.Element => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(route.params.prof);
   const {width} = useWindowDimensions();
 
   useEffect(() => {
@@ -32,10 +32,10 @@ const SpeakerDetails = ({route}): React.JSX.Element => {
       <View style={styles.eventsConatiner}>
         <TouchableOpacity style={styles.eventCard}>
           <View style={styles.time}>
-            <Image
+            {data?.speaker_image && (<Image
               source={{uri: data?.speaker_image}}
               style={styles.profImage}
-            />
+            />)}
           </View>
           <View style={styles.topicSpeaker}>
             <RenderHtml

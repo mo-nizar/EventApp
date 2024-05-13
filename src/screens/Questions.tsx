@@ -130,8 +130,8 @@ export default Questions;
 const styles = StyleSheet.create({
   container: {
     paddingTop: 20,
-    flex: 1,
     backgroundColor: COLORS.light,
+    paddingBottom:150,
   },
   logo: {
     alignSelf: 'center',
