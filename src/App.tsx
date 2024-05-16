@@ -1,16 +1,15 @@
 import React from 'react';
-import {SafeAreaView, StatusBar, useColorScheme} from 'react-native';
 import Route from './navigation/Route';
 import 'react-native-gesture-handler';
+import {Provider} from 'react-redux';
+import store from './store';
 
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? 'black' : 'white',
-  };
-
-  return <Route />;
+  return (
+    <Provider store={store}>
+      <Route />
+    </Provider>
+  );
 }
 
 export default App;

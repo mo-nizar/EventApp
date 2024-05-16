@@ -7,6 +7,8 @@ import CheckBox from '../components/CheckBox';
 import Dropdown from '../components/Dropdown';
 import CountryCodePicker from '../components/CountryCodePicker';
 import api from '../services/api';
+import {setProfile} from '../store/profileSlice';
+import {useDispatch} from 'react-redux';
 
 const Landing = ({navigation}): React.JSX.Element => {
   const InputFields = [
@@ -65,9 +67,8 @@ const Landing = ({navigation}): React.JSX.Element => {
     },
   ];
 
-  const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
+  const dispatch = useDispatch();
   const LoginInputFields = [
     {
       label: 'Email *',
@@ -84,22 +85,27 @@ const Landing = ({navigation}): React.JSX.Element => {
   ];
 
   const handleLogin = async () => {
-    navigation.navigate('Root');
+    setIsLoading(true);
+    try {
+      const {data} = await api.post('/UserLogin', null, {
+        params: {
+          Email: values.Email,
+          Password: values.Password,
+        },
+      });
 
-    // setIsLoading(true);
-    // try {
-    //   const {data} = await api.post('/UserLogin', null, {});
-    //   if (data) {
-    //     navigation.navigate('Root');
-    //   } else {
-    //     throw new Error();
-    //   }
-    // } catch (err) {
-    //   console.error(err);
-    //   Alert.alert('Failed', 'Something went wront please try again later.');
-    // } finally {
-    //   setIsLoading(false);
-    // }
+      if (data.Status) {
+        dispatch(setProfile({...data}));
+
+        navigation.navigate('Root');
+      } else {
+        throw new Error();
+      }
+    } catch (err) {
+      Alert.alert('Failed', 'Something went wront please try again later.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleRegister = async () => {
@@ -116,13 +122,17 @@ const Landing = ({navigation}): React.JSX.Element => {
       const {data} = await api.post('/RegisterUser', null, {
         params: {
           ...values,
+          Userconsent: values.Userconsent ? 'true' : 'false',
         },
       });
 
-      if (data?.status) {
-        navigation.navigate('Root');
+      if (data?.Status) {
+        Alert.alert('Registration Successful');
+        setRegister(false);
+      } else if (data?.Message.includes('Email Exists')) {
+        Alert.alert('Email Exists Already.');
       } else {
-        throw new Error();
+        throw new Error(data.message);
       }
     } catch (err) {
       console.error(err);

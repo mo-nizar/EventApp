@@ -1,42 +1,31 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {View, Text, Image, StyleSheet} from 'react-native';
-import api from '../services/api';
 import {COLORS} from '../constants';
+import {useSelector} from 'react-redux';
+import Screen from '../layouts/Screen';
 
 const Badge = (): React.JSX.Element => {
-  const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    setIsLoading(true);
-    try {
-      const {data} = await api.post('/LoadAgenda?EventId=1', null, {});
-
-      if (data) {
-        setData(data);
-      } else {
-        throw new Error();
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const profile = useSelector(state => state.profile);
 
   return (
-    <View style={styles.container}>
+    <Screen style={styles.container}>
       <Image
         source={require('../assets/images/loreal_logo.png')}
         style={styles.logo}
       />
       <Text style={styles.venue}>RIYADH 2024</Text>
       <View style={styles.greyBorder} />
-    </View>
+
+      <View style={styles.qrConatiner}>
+        <View style={styles.imageWrapper}>
+          {profile?.QrCode && (
+            <Image source={{uri: profile?.QrCode}} style={styles.qrCode} />
+          )}
+
+          <Text style={styles.userName}>{profile?.DoctorName}</Text>
+        </View>
+      </View>
+    </Screen>
   );
 };
 
@@ -45,7 +34,6 @@ export default Badge;
 const styles = StyleSheet.create({
   container: {
     paddingTop: 20,
-    flex: 1,
     backgroundColor: 'white',
   },
   logo: {
@@ -56,7 +44,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '300',
     color: COLORS.tertiary,
-    marginBottom:50,
+    marginBottom: 50,
   },
   agenda: {
     alignSelf: 'center',
@@ -65,6 +53,37 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '700',
     color: COLORS.tertiary,
+  },
+  userName: {
+    textAlign: 'left',
+    flexWrap: 'wrap',
+    fontWeight: '600',
+    fontSize: 16,
+    color: COLORS.tertiary,
+    textTransform: 'capitalize',
+  },
+  imageWrapper: {
+    flex: 1,
+    alignItems: 'center',
+    margin: 20,
+    padding: 20,
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 0},
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    elevation: 8,
+    backgroundColor: COLORS.light,
+  },
+  qrConatiner: {
+    marginTop: 50,
+    flex: 1,
+  },
+  qrCode: {
+    borderWidth: 1,
+    width: '70%',
+    aspectRatio: 1,
+    marginBottom: 50,
   },
   greyBorder: {
     backgroundColor: COLORS.grey,

@@ -1,6 +1,3 @@
-/* eslint-disable react/no-unstable-nested-components */
-// In App.js in a new project
-
 import * as React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import * as Screens from '../screens';
